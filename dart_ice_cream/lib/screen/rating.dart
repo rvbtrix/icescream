@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dart_ice_cream/style/theme.dart' as Theme;
 
 class Rating extends StatefulWidget {
   @override
@@ -8,6 +9,10 @@ class Rating extends StatefulWidget {
 class _RatingState extends State<Rating> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+        body: Container(
+            decoration: BoxDecoration(
+      gradient: Theme.Colors.primaryGradient,
+    )));
   }
 }

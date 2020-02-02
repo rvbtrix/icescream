@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:dart_ice_cream/style/theme.dart' as Theme;
 
 class Setting extends StatefulWidget {
-
   @override
   _SettingState createState() => _SettingState();
 }
@@ -9,7 +9,10 @@ class Setting extends StatefulWidget {
 class _SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-    );
+    return Scaffold(
+        body: Container(
+            decoration: BoxDecoration(
+      gradient: Theme.Colors.primaryGradient,
+    )));
   }
 }
