@@ -1,8 +1,8 @@
 import 'package:dart_ice_cream/screen/login.dart';
+import 'package:dart_ice_cream/style/theme.dart' as Theme;
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
-import 'package:dart_ice_cream/style/theme.dart' as Theme;
 
 class Splash extends StatefulWidget {
   @override
@@ -15,15 +15,8 @@ class _SplashState extends State<Splash> {
     return Stack(
       children: <Widget>[
         SplashScreen(
-          seconds: 8,
-          gradientBackground: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Theme.Colors.loginGradientStart,
-              Theme.Colors.loginGradientEnd
-            ],
-          ),
+          seconds: 3,
+          gradientBackground: Theme.Colors.primaryGradient,
           navigateAfterSeconds: LoginPage(),
           loaderColor: Colors.transparent,
         ),
