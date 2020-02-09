@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using IceCream.Business.Component;
 using IceCream.Data.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -40,10 +41,9 @@ namespace IceCream.API.Controllers
         }
 
         [HttpPost, Route("Add")]
-        [Authorize("Bearer")]
         public IActionResult Add([FromBody] User user)
         {
-            if (user == null)
+            if (user == null || user.Email.Split('@')[1] != "dartdigital.com.br" || Component.GetAll().Any(w => w.Email == user.Email))
             {
                 return BadRequest();
             }
