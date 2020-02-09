@@ -3,6 +3,7 @@ using IceCream.Business.Component;
 using IceCream.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IceCream.API.Controllers
 {
@@ -17,12 +18,14 @@ namespace IceCream.API.Controllers
         }
 
         [HttpGet]
+        [Authorize("Bearer")]
         public List<IceCreamShop> GetAll()
         {
             return Component.GetAll();
         }
 
         [HttpGet, Route("Get")]
+        [Authorize("Bearer")]
         public IActionResult Get(int id)
         {
             var item = Component.Get(id);
@@ -34,6 +37,7 @@ namespace IceCream.API.Controllers
         }
 
         [HttpPost, Route("Add")]
+        [Authorize("Bearer")]
         public IActionResult Add([FromBody] IceCreamShop item)
         {
             if (item == null)
@@ -47,6 +51,7 @@ namespace IceCream.API.Controllers
         }
 
         [HttpPut, Route("Update")]
+        [Authorize("Bearer")]
         public IActionResult Update([FromBody] IceCreamShop item)
         {
             if (item == null)
@@ -67,6 +72,7 @@ namespace IceCream.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             if (id <= 0)

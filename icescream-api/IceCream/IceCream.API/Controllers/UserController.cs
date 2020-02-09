@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using IceCream.Business.Component;
 using IceCream.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IceCream.API.Controllers
@@ -16,6 +17,7 @@ namespace IceCream.API.Controllers
         }
 
         [HttpGet, Route("GetAll")]
+        [Authorize("Bearer")]
         public IActionResult GetAll()
         {
             List<User> response = Component.GetAll();
@@ -24,6 +26,7 @@ namespace IceCream.API.Controllers
         }
 
         [HttpGet, Route("Get")]
+        [Authorize("Bearer")]
         public IActionResult Get(int id)
         {
             var user = Component.Get(id);
@@ -37,6 +40,7 @@ namespace IceCream.API.Controllers
         }
 
         [HttpPost, Route("Add")]
+        [Authorize("Bearer")]
         public IActionResult Add([FromBody] User user)
         {
             if (user == null)
@@ -50,6 +54,7 @@ namespace IceCream.API.Controllers
         }
 
         [HttpPut, Route("Update")]
+        [Authorize("Bearer")]
         public IActionResult Update([FromBody] User user)
         {
             if (user == null)
@@ -70,6 +75,7 @@ namespace IceCream.API.Controllers
         }
 
         [HttpPut, Route("EnableDisable")]
+        [Authorize("Bearer")]
         public IActionResult EnableDisable([FromBody] RequestEnableDisable request)
         {
             if (request == null)
@@ -90,6 +96,7 @@ namespace IceCream.API.Controllers
         }
 
         [HttpPut, Route("ChangePassword")]
+        [Authorize("Bearer")]
         public IActionResult ChangePassword([FromBody] RequestChangePassword request)
         {
             if (request == null)
@@ -113,6 +120,7 @@ namespace IceCream.API.Controllers
         }
 
         [HttpDelete, Route("Delete")]
+        [Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             User user = Component.Get(id);
@@ -127,20 +135,21 @@ namespace IceCream.API.Controllers
             return Ok();
         }
 
-        [HttpPost, Route("Login")]
-        public IActionResult Login([FromBody] User user) 
-        {
-            User response = Component.Login(user.Email, user.Password);
+        //[HttpPost, Route("Login")]
+        //public IActionResult Login([FromBody] User user) 
+        //{
+        //    User response = Component.Login(user.Email, user.Password);
 
-            if (user == null) 
-            {
-                return NotFound();
-            }
+        //    if (user == null) 
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Json(response);    
-        }
+        //    return Json(response);    
+        //}
 
         [HttpPost, Route("AcceptedTerms")]
+        [Authorize("Bearer")]
         public IActionResult AcceptedTerms([FromBody] User user)
         {
             User userObj = Component.Get(user.IdUser);
