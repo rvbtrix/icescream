@@ -30,6 +30,8 @@ dependencies:
   # Uma biblioteca composta e baseada no futuro para fazer solicitações HTTP.
   http: ^0.12.0+4
 
+  dio: 3.0.8
+
   # MobX é uma biblioteca para gerenciar reativamente o estado de seus aplicativos. Use o poder de
   # observáveis, ações e reações para sobrecarregar seus aplicativos Dart e Flutter.
   mobx: ^0.4.0+1
