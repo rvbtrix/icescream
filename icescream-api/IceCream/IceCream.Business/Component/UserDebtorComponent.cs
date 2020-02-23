@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using IceCream.Data.Models;
@@ -33,6 +34,11 @@ namespace IceCream.Business.Component
             return UserDebtorRepository.GetUserDebtorByUser(idUser);
         }
 
+        public UserDebtor Get(int idUserDebtor)
+        {
+            return UserDebtorRepository.Get(idUserDebtor);
+        }
+
         public void CreatePendingDebtors()
         {
             UserDebtorRepository.CreatePendingDebtors();
@@ -49,11 +55,6 @@ namespace IceCream.Business.Component
                 throw new Exception("Data de pagamento é obrigatória");
             }
 
-            if (requestPayment.Evaluation == null)
-            {
-                throw new Exception("Avaliação é obrigatória");
-            }
-
            var userDebtor = UserDebtorRepository.Get(requestPayment.IdUserDebtor);
 
             if (userDebtor == null)
@@ -66,12 +67,14 @@ namespace IceCream.Business.Component
                 throw new Exception("Pagamento já baixado");
             }
 
+            if (userDebtor.IdUser != requestPayment.IdUser)
+            {
+                throw new Exception("Usuário inválido para este pagamento");
+            }
+
             UserDebtorRepository.UpdateRequestPayment(requestPayment);
         }
         
-        public List<EvaluationData> GetAllEvaluationData()
-        {
-            return UserDebtorRepository.GetAllEvaluationData();
-        }
+        
     }
 }

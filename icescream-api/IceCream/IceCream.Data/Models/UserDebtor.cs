@@ -12,7 +12,9 @@ namespace IceCream.Data.Models
         public DateTime? PaymentDate { get; set; }
         public string Evaluation { get; set; }
         public DateTime Created { get; set; }
-
+        public string PaymentImageUrl { get; set; }
         public virtual User IdUserNavigation { get; set; }
+
+        public virtual ICollection<UserDebtorEvaluation> UserDebtorEvaluation { get; set; }
     }
 }

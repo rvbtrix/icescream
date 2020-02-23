@@ -2,13 +2,18 @@
 using IceCream.Business.Component;
 using IceCream.Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+
 namespace IceCream.API.Controllers
 {
     [Route("api/UserDebtor")]
-    public class UserDebtorController : Controller 
+    public class UserDebtorController : Controller
     {
         private UserDebtorComponent Component { get; set; }
+        private S3Component S3Component { get; set; }
 
         public UserDebtorController(DBIceScreamContext context)
         {
@@ -55,14 +60,21 @@ namespace IceCream.API.Controllers
 
             return Ok();
         }
-
-        [HttpGet, Route("GetAllEvaluationData")]
+        [HttpPost, Route("CreateImagePayment")]
         [Authorize("Bearer")]
-        public IActionResult GetAllEvaluationData()
+        public IActionResult CreateImagePayment(IFormFile file)
         {
-            var evaluationData = Component.GetAllEvaluationData();
+            if (file == null)
+            {
+                return BadRequest();
+            }
 
-            return Json(evaluationData);
+            Guid g = Guid.NewGuid();
+            var imageUrl = $"{g.ToString()}.{file.FileName.Split('.').ToList().Last()}";
+
+            _ = S3Component.UploadFileToS3(file, imageUrl);
+
+            return Ok(Json(imageUrl));
         }
     }
 }

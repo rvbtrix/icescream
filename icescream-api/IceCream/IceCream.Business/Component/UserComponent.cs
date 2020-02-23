@@ -7,6 +7,11 @@ using System;
 using System.Net;
 using System.IO;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Amazon.S3;
+using Microsoft.AspNetCore.Http;
+using Amazon;
+using Amazon.S3.Transfer;
 
 namespace IceCream.Business.Component
 {
@@ -55,13 +60,15 @@ namespace IceCream.Business.Component
             if (!string.IsNullOrEmpty(user.Password))
                 originalEntity.Password = GetMd5Hash(user.Password);
 
-            if (user.ImageUrl != originalEntity.ImageUrl)
-                originalEntity.ImageUrl = user.ImageUrl;
-
             if (user.IsAdmin != originalEntity.IsAdmin)
                 originalEntity.IsAdmin = user.IsAdmin;
 
             UserRepository.Update(originalEntity);
+        }
+
+        public void UpdateImage(int idUser, string imageUrl)
+        {
+            UserRepository.UpdateImage(idUser, imageUrl);
         }
 
         public void Delete(int id)

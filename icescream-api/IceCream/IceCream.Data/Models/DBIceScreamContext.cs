@@ -9,6 +9,8 @@ namespace IceCream.Data.Models
         public virtual DbSet<IceCreamShop> IceCreamShop { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserDebtor> UserDebtor { get; set; }
+        public virtual DbSet<UserDebtorEvaluation> UserDebtorEvaluation { get; set; }
+
 
         public DBIceScreamContext(DbContextOptions<DBIceScreamContext> options)
             : base(options)
@@ -110,6 +112,31 @@ namespace IceCream.Data.Models
                     .HasForeignKey(d => d.IdUser)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_UserDebtor_User");
+            });
+            modelBuilder.Entity<UserDebtorEvaluation>(entity =>
+            {
+                entity.HasKey(e => e.IdUserDebtorEvaluation)
+                    .HasName("PK_UserDebtorEvaluation");
+
+                entity.Property(e => e.Star)
+                    .IsRequired();
+
+                entity.Property(e => e.UserDebtorEvaluationDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .IsRequired();
+
+                entity.Property(e => e.IdUserDebtor)
+                    .IsRequired();
+
+                entity.Property(e => e.IdUserDebtorEvaluation)
+                    .IsRequired();
+
+                entity.HasOne(d => d.IdUserDebtorEvaluatorNavigation)
+                    .WithMany(p => p.UserDebtorEvaluation)
+                    .HasForeignKey(d => d.IdUserDebtor)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Evaluation_UserDebtor");
             });
         }
     }
