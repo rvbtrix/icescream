@@ -68,8 +68,9 @@ namespace IceCream.API.Security
             );
 
             DateTime dataCriacao = DateTime.Now;
+            var sec = 5200000;
             DateTime dataExpiracao = dataCriacao +
-                TimeSpan.FromSeconds(_tokenConfigurations.Seconds);
+                TimeSpan.FromSeconds(sec);
 
             var handler = new JwtSecurityTokenHandler();
 

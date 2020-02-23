@@ -18,6 +18,8 @@ namespace IceCream.API.Controllers
         public UserDebtorController(DBIceScreamContext context)
         {
             Component = new UserDebtorComponent(context);
+            S3Component = new S3Component();
+
         }
 
         [HttpGet, Route("GetPending")]
@@ -25,6 +27,15 @@ namespace IceCream.API.Controllers
         public IActionResult GetPending(int? maximumItems = null)
         {
             var userDebtorList = Component.GetPendingUserDebtor(maximumItems);
+
+            return Json(userDebtorList);
+        }
+
+        [HttpGet, Route("GetUserDebtorByUser")]
+        [Authorize("Bearer")]
+        public IActionResult GetUserDebtorByUser(int idUser)
+        {
+            var userDebtorList = Component.GetUserDebtorByUser(idUser);
 
             return Json(userDebtorList);
         }

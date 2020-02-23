@@ -17,6 +17,10 @@ namespace IceCream.Business.Component
 {
     public class S3Component
     {
+        public S3Component()
+        {
+           
+        }
         public async Task UploadFileToS3(IFormFile file, string fileName)
         {
             using (var client = new AmazonS3Client("AKIA336JXY6S5K36AHDT", "RM3rhYtkU0UzX5JMNHxXuLSIX8zFfI0vuQWF7eJl", RegionEndpoint.USEast2))

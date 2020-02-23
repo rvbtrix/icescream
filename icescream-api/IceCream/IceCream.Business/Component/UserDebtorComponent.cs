@@ -23,6 +23,10 @@ namespace IceCream.Business.Component
         {
             return UserDebtorRepository.GetAllUserDebtor();
         }
+        public List<UserDebtor> GetAllUserDebtorPaid()
+        {
+            return UserDebtorRepository.GetAllUserDebtor().Where(w => w.PaymentDate != null).ToList();
+        }
 
         public List<PendingUserDebtor> GetPendingUserDebtor(int? maximumItems)
         {

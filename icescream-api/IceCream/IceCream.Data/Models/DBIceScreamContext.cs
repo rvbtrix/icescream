@@ -136,7 +136,8 @@ namespace IceCream.Data.Models
                     .WithMany(p => p.UserDebtorEvaluation)
                     .HasForeignKey(d => d.IdUserDebtor)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_Evaluation_UserDebtor");
+                    .HasConstraintName("FK_UserDebtorEvaluation_UserDebtor");
+
             });
         }
     }

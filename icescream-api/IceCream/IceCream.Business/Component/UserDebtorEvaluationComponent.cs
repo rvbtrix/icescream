@@ -19,6 +19,8 @@ namespace IceCream.Business.Component
         {
             UserDebtorEvaluationRepository = new UserDebtorEvaluationRepository(context);
             UserComponent = new UserComponent(context);
+            UserDebtorComponent = new UserDebtorComponent(context);
+
         }
         public List<UserDebtorEvaluation> GetUserDebtorEvaluation(int idUserDebtor)
         {
@@ -30,12 +32,12 @@ namespace IceCream.Business.Component
         }
         public void Add(UserDebtorEvaluation evaluation)
         {
-            if (UserDebtorComponent.Get(evaluation.IdUserDebtor) != null)
+            if (UserDebtorComponent.Get(evaluation.IdUserDebtor) == null)
             {
                 throw new Exception("Débito não encontrado");
             }
 
-            if (UserComponent.Get(evaluation.IdUserDebtorEvaluator) != null)
+            if (UserComponent.Get(evaluation.IdUserDebtorEvaluator) == null)
             {
                 throw new Exception("Avaliador não encontrado");
             }
@@ -54,16 +56,22 @@ namespace IceCream.Business.Component
         }
         public List<EvaluationData> GetAllUserDebtorEvaluation()
         {
-            var evaluations = UserDebtorEvaluationRepository.GetAllUserDebtorEvaluation().Select(s => new EvaluationData
-            {
-                DebitDate = UserDebtorComponent.Get(s.IdUserDebtor).DebitDate,
-                PaymentDate = UserDebtorComponent.Get(s.IdUserDebtor).PaymentDate.Value,
-                Reason = UserDebtorComponent.Get(s.IdUserDebtor).Reason,
-                UserName = UserComponent.Get(s.IdUserDebtorEvaluator).Name,
-                Evaluation = UserDebtorEvaluationRepository.GetAllByIdUserDebtor(s.IdUserDebtor).Any() ? UserDebtorEvaluationRepository.GetAllByIdUserDebtor(s.IdUserDebtor).Sum(ss => ss.Star) / UserDebtorEvaluationRepository.GetAllByIdUserDebtor(s.IdUserDebtor).Count() : 0
-            });
+            var allUserDebtor = UserDebtorComponent.GetAllUserDebtorPaid();
 
-            return evaluations.ToList();
+            var evaluationDataList = new List<EvaluationData>();
+            foreach (var item in allUserDebtor)
+            {
+                var evaluationList = UserDebtorEvaluationRepository.GetAllByIdUserDebtor(item.IdUserDebtor);
+                var evaluationData = new EvaluationData();
+                evaluationData.DebitDate = item.DebitDate;
+                evaluationData.PaymentDate = item.PaymentDate.Value;
+                evaluationData.Reason = item.Reason;
+                evaluationData.UserName = UserComponent.Get(item.IdUser).Name;
+                evaluationData.Evaluation = evaluationList.Any() ? (decimal)evaluationList.Sum(ss => ss.Star) / (decimal)evaluationList.Count() : 0;
+                evaluationDataList.Add(evaluationData);
+            }
+
+            return evaluationDataList.ToList();
         }
     }
 }

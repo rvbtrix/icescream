@@ -20,6 +20,8 @@ namespace IceCream.API.Controllers
         public UserController(DBIceScreamContext context)
         {
             Component = new UserComponent(context);
+            S3Component = new S3Component();
+
         }
 
         [HttpGet, Route("GetAll")]
@@ -60,9 +62,10 @@ namespace IceCream.API.Controllers
 
         [HttpPut, Route("Update")]
         [Authorize("Bearer")]
-        public IActionResult Update([FromBody] User user)
+        public IActionResult Update([FromBody] RequestUpdateUser user)
         {
-            if (user == null)
+            var userAdmin = Component.Get(user.idUserAdminRequester);
+            if (user == null || (userAdmin != null && !userAdmin.IsAdmin))
             {
                 return BadRequest();
             }
@@ -108,7 +111,9 @@ namespace IceCream.API.Controllers
         [Authorize("Bearer")]
         public IActionResult EnableDisable([FromBody] RequestEnableDisable request)
         {
-            if (request == null)
+            var userAdmin = Component.Get(request.idUserAdminRequester);
+
+            if (request == null || (userAdmin != null && !userAdmin.IsAdmin))
             {
                 return BadRequest();
             }
