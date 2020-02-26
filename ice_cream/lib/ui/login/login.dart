@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ice_cream/constants/color_theme.dart';
 import 'package:ice_cream/constants/global_strings.dart';
 import 'package:ice_cream/routes.dart';
-import 'package:ice_cream/store/debtor_store.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -10,11 +9,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-DebtorStore _store = DebtorStore();
-
-@override
+  @override
   void initState() {
-    _store.getDataDebtorsFromApi;
     super.initState();
   }
 

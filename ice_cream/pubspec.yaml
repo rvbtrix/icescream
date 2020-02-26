@@ -32,6 +32,9 @@ dependencies:
 
   dio: 3.0.8
 
+  # An helper to easily exposes a value using InheritedWidget without having to write one.
+  provider: ^4.0.1
+
   # MobX é uma biblioteca para gerenciar reativamente o estado de seus aplicativos. Use o poder de
   # observáveis, ações e reações para sobrecarregar seus aplicativos Dart e Flutter.
   mobx: ^0.4.0+1
