@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using IceCream.Business.Component;
 using IceCream.Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IceCream.API.Controllers
@@ -11,10 +14,14 @@ namespace IceCream.API.Controllers
     public class UserController : Controller
     {        
         private UserComponent Component { get; set; }
-        
+        private S3Component S3Component { get; set; }
+
+
         public UserController(DBIceScreamContext context)
         {
             Component = new UserComponent(context);
+            S3Component = new S3Component();
+
         }
 
         [HttpGet, Route("GetAll")]
@@ -55,9 +62,10 @@ namespace IceCream.API.Controllers
 
         [HttpPut, Route("Update")]
         [Authorize("Bearer")]
-        public IActionResult Update([FromBody] User user)
+        public IActionResult Update([FromBody] RequestUpdateUser user)
         {
-            if (user == null)
+            var userAdmin = Component.Get(user.idUserAdminRequester);
+            if (user == null || (userAdmin != null && !userAdmin.IsAdmin))
             {
                 return BadRequest();
             }
@@ -74,11 +82,38 @@ namespace IceCream.API.Controllers
             return Ok();
         }
 
+        [HttpPost, Route("ChangeImageProfile")]
+        [Authorize("Bearer")]
+        public IActionResult ChangeImageProfile(IFormFile file, int idUser)
+        {
+            if (idUser <= 0 || file == null)
+            {
+                return BadRequest();
+            }
+
+            User user = Component.Get(idUser);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            Guid g = Guid.NewGuid();
+            user.ImageUrl = $"{g.ToString()}.{file.FileName.Split('.').ToList().Last()}";
+
+            _ = S3Component.UploadFileToS3(file, user.ImageUrl);
+
+            Component.UpdateImage(user.IdUser, user.ImageUrl);
+
+            return Ok();
+        }
+
         [HttpPut, Route("EnableDisable")]
         [Authorize("Bearer")]
         public IActionResult EnableDisable([FromBody] RequestEnableDisable request)
         {
-            if (request == null)
+            var userAdmin = Component.Get(request.idUserAdminRequester);
+
+            if (request == null || (userAdmin != null && !userAdmin.IsAdmin))
             {
                 return BadRequest();
             }

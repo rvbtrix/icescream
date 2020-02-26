@@ -31,19 +31,19 @@ namespace IceCream.Data.Repository
                 UserContact = u.IdUserNavigation.Contact,
                 DebitDate = u.DebitDate,
                 Reason = u.Reason,
-                ImageURL = u.IdUserNavigation.ImageUrl
+                ImageURL = string.Concat("https://icescreams3.s3.us-east-2.amazonaws.com/", u.IdUserNavigation.ImageUrl)
             });
 
-            if(maximumItems.HasValue)
+            if (maximumItems.HasValue)
             {
-               query = query.Take(maximumItems.Value);
-            }            
+                query = query.Take(maximumItems.Value);
+            }
 
             var response = query.ToList();
 
             return response;
         }
-        
+
         public List<UserDebtor> GetUserDebtorByUser(int idUser)
         {
             var response = Context.UserDebtor.Where(ud => ud.IdUser == idUser).ToList();
@@ -66,7 +66,7 @@ namespace IceCream.Data.Repository
             Context.SaveChanges();
         }
 
-        
+
         public DateTime? GetLastPaymentDate()
         {
             var query = Context.UserDebtor.Where(ud => ud.PaymentDate != null);
@@ -81,7 +81,7 @@ namespace IceCream.Data.Repository
             if (entity != null)
             {
                 entity.PaymentDate = requestUserDebtorPayment.PaymentDate;
-                entity.Evaluation = requestUserDebtorPayment.Evaluation;
+                entity.PaymentImageUrl = requestUserDebtorPayment.PaymentImageUrl;
 
                 Context.UserDebtor.Update(entity);
 
@@ -89,25 +89,9 @@ namespace IceCream.Data.Repository
             }
         }
 
-        public List<EvaluationData> GetAllEvaluationData()
-        {
-            var query = Context.UserDebtor.Where(ud => ud.PaymentDate != null).OrderByDescending(ud => ud.PaymentDate);
-
-            var responseList = query.Select(q => new EvaluationData() 
-            {
-                UserName = q.IdUserNavigation.Name,
-                DebitDate = q.DebitDate,
-                PaymentDate = q.PaymentDate.Value,
-                Reason = q.Reason,
-                Evaluation = q.Evaluation,
-            }).ToList();
-
-            return responseList;
-        }
-
         public void CreatePendingDebtors()
         {
-            Context.Database.ExecuteSqlCommand("dbo.GerarDebitos");
+            _ = Context.Database.ExecuteSqlCommand("dbo.GerarDebitos");
         }
     }
 }

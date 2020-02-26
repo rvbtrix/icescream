@@ -28,6 +28,7 @@ namespace IceCream.Data.Repository
             User user = new User();
 
             user = Context.User.FirstOrDefault(u => u.IdUser == id);
+            user.ImageUrl = user.ImageUrl != null ? $"https://icescreams3.s3.us-east-2.amazonaws.com/{ user.ImageUrl}" : "";
 
             return user;
         }
@@ -56,6 +57,20 @@ namespace IceCream.Data.Repository
                 entity.IsAdmin = user.IsAdmin;
                 entity.Active = user.Active;
                 
+                Context.User.Update(entity);
+
+                Context.SaveChanges();
+            }
+        }
+
+        public void UpdateImage(int idUser, string imageUrl)
+        {
+            User entity = Context.User.FirstOrDefault(u => u.IdUser == idUser);
+
+            if (entity != null)
+            {
+                entity.ImageUrl = imageUrl;
+
                 Context.User.Update(entity);
 
                 Context.SaveChanges();
