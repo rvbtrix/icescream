@@ -1,3 +1,4 @@
 class GlobalStrings{
-    static const String textLogin = 'Login';
+    static const String login_label = 'Login';
+    static const String login_button_text = 'CONTINUAR';
 }

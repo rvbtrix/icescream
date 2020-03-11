@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // selectedItemColor: Theme.Colors.bottomNavActive,
           // unselectedItemColor: Theme.Colors.bottomNavInActive,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Color(ColorTheme.primaryColor),
+          backgroundColor: Color(ColorTheme.primaryColorPurple),
           showSelectedLabels: false,
           showUnselectedLabels: false,
           currentIndex: selectedIndex,

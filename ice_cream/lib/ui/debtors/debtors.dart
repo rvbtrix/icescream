@@ -11,7 +11,7 @@ class Debtors extends StatelessWidget {
     _debtorStore.getDebtors();
 
     return Scaffold(
-      backgroundColor: Color(ColorTheme.primaryColor),
+      backgroundColor: Color(ColorTheme.primaryColorPurple),
     );
   }
 }

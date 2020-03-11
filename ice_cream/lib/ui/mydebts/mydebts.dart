@@ -10,7 +10,7 @@ class MyDebts extends StatefulWidget {
 class _MyDebtsState extends State<MyDebts> {
   @override
   Widget build(BuildContext context) {
-    return Container(color:Color(ColorTheme.primaryColor)
+    return Container(color:Color(ColorTheme.primaryColorPurple)
     );
   }
 }

@@ -10,7 +10,7 @@ class Evaluation extends StatefulWidget {
 class _EvaluationState extends State<Evaluation> {
   @override
   Widget build(BuildContext context) {
-    return Container(color:Color(ColorTheme.primaryColor)
+    return Container(color:Color(ColorTheme.primaryColorPurple)
     );
   }
 }

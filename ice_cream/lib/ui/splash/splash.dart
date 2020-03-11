@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(20.0),
-      color: Color(ColorTheme.primaryColor),
+      color: Color(ColorTheme.primaryColorPurple),
       child: SvgPicture.asset("assets/ice_cream_splash.svg"),
     );
   }
